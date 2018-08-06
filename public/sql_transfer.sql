@@ -14,4 +14,15 @@ END
 ===================================
 **
 ===================================
+CREATE DEFINER=`root`@`localhost` PROCEDURE `blog_getBlogList`(
+IN p_Title longtext,
+IN p_CurrentPage int,
+IN p_PageSize int
+)
+BEGIN
+	select Id,Title,Date,Tags
+    from blog.blog
+    where (Title LIKE  concat(concat(  '%',p_Title ), '%' ))
+    LIMIT p_CurrentPage, p_PageSize;
+END
 
