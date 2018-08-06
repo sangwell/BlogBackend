@@ -1,14 +1,12 @@
 var express = require('express');
 var mysql = require('mysql');
 var router = express.Router();
-
-
-
-var connection = mysql.createConnection({
+var dbConnection = {
     host     : 'localhost',
     user     : 'root',
     password : 'root'
-});
+};
+
 /* GET users listing. */
 router.post('/', function(req, res, next) {
   var Id = req.body.Id;
@@ -18,6 +16,7 @@ router.post('/', function(req, res, next) {
   var Tags = req.body.Tags;
   var sqlUrl = 'call blog.blog_add(?, ?, ?, ?, ?);';
   var inParams = [Id,Title,Content,Date,Tags];
+  var connection = mysql.createConnection(dbConnection);
   connection.connect();
   connection.query(sqlUrl, inParams, function(err, rows, fields) {
       if (err) throw err;
