@@ -7,12 +7,16 @@ var bodyParser = require("body-parser");
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var blogRouter = require('./routes/blog');
 
 var app = express();
 
 // view engine setup
 app.all('*', function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Content-Length, Authorization, Accept, X-Requested-With , yourHeaderFeild');
+    res.header('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
     next();
 });
 app.set('views', path.join(__dirname, 'views'));
@@ -27,6 +31,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/blog', blogRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
