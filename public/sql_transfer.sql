@@ -25,4 +25,29 @@ BEGIN
     where (Title LIKE  concat(concat(  '%',p_Title ), '%' ))
     LIMIT p_CurrentPage, p_PageSize;
 END
+===================================
+**2018-08-08
+===================================
+CREATE DEFINER=`root`@`localhost` PROCEDURE `blog_getBlogContent`(
+IN p_Id varchar(128)
+)
+BEGIN
+	select Title,Content
+    from blog.blog
+    where Id = p_Id;
+END
 
+
+===================================
+**2018-08-08
+===================================
+CREATE DEFINER=`root`@`localhost` PROCEDURE `blog_getBlogListByTag`(
+IN p_Tag varchar(128)
+)
+BEGIN
+	select Id,Title,Date,Tags
+    from blog.blog
+    where Tags LIKE  concat(concat(  '%',p_Tag ), '%' )
+    order by Id desc;
+
+END
