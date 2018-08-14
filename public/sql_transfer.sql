@@ -6,48 +6,21 @@ IN p_Date varchar(20),
 IN p_Tags varchar(100)
 )
 BEGIN
-	insert into blog.blog values (p_Id,p_Title,p_Content,p_Date,p_Tags);
-END
 
-
-
-===================================
-**
-===================================
-CREATE DEFINER=`root`@`localhost` PROCEDURE `blog_getBlogList`(
-IN p_Title longtext,
-IN p_CurrentPage int,
-IN p_PageSize int
-)
-BEGIN
-	select Id,Title,Date,Tags
-    from blog.blog
-    where (Title LIKE  concat(concat(  '%',p_Title ), '%' ))
-    LIMIT p_CurrentPage, p_PageSize;
-END
-===================================
-**2018-08-08
-===================================
-CREATE DEFINER=`root`@`localhost` PROCEDURE `blog_getBlogContent`(
-IN p_Id varchar(128)
-)
-BEGIN
-	select Title,Content
-    from blog.blog
-    where Id = p_Id;
-END
-
-
-===================================
-**2018-08-08
-===================================
-CREATE DEFINER=`root`@`localhost` PROCEDURE `blog_getBlogListByTag`(
-IN p_Tag varchar(128)
-)
-BEGIN
-	select Id,Title,Date,Tags
-    from blog.blog
-    where Tags LIKE  concat(concat(  '%',p_Tag ), '%' )
-    order by Id desc;
+    if exists (select * from blog.blog where Id = p_Id)
+    then
+    begin
+		UPDATE blog.blog
+		SET Title = p_Title,
+			Content = p_Content,
+            Date = p_Date,
+            Tags = p_Tags
+		WHERE Id = p_Id;
+    end;
+    else
+    begin
+		insert into blog.blog values (p_Id,p_Title,p_Content,p_Date,p_Tags);
+    end;
+    end if;
 
 END
